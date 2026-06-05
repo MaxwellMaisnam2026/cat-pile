@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>☁️ The Cat Pile ☁️</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(180deg,#fffdf8,#fff1f5);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+}
+
+.card{
+background:white;
+width:340px;
+max-width:95%;
+padding:25px;
+border-radius:30px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+position:relative;
+z-index:2;
+}
+
+.cat{
+width:220px;
+height:220px;
+object-fit:cover;
+border-radius:24px;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 6px 20px rgba(0,0,0,.08);
+}
+
+.petting{
+animation:pet .5s ease;
+}
+
+@keyframes pet{
+0%{
+transform:scale(1);
+}
+50%{
+transform:scale(1.1) translateY(-10px);
+}
+100%{
+transform:scale(1);
+}
+}
+
+h2{
+color:#444;
+margin-top:12px;
+margin-bottom:12px;
+}
+
+p{
+color:#666;
+line-height:1.6;
+margin-top:10px;
+}
+
+button{
+background:#ffdce8;
+border:none;
+padding:12px 20px;
+border-radius:20px;
+cursor:pointer;
+font-size:15px;
+margin-top:10px;
+}
+
+.small{
+font-size:13px;
+color:#999;
+}
+
+.hidden{
+display:none;
+}
+
+.heart{
+position:absolute;
+font-size:24px;
+animation:floatUp 1.5s forwards;
+pointer-events:none;
+}
+
+@keyframes floatUp{
+0%{
+opacity:1;
+transform:translateY(0);
+}
+100%{
+opacity:0;
+transform:translateY(-80px);
+}
+}
+
+.petal{
+position:fixed;
+top:-20px;
+font-size:20px;
+pointer-events:none;
+animation:fall linear forwards;
+z-index:1;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh);
+opacity:0;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card" id="home">
+
+<img
+id="cat"
+class="cat"
+src="cat1.jpg"
+alt="cat"
+onclick="petCat()">
+
+<h2>☁️ The Cat Pile ☁️</h2>
+
+<p id="message">
+the cats are currently having a peaceful day.
+</p>
+
+<p>
+Head Pats Given:
+<span id="counter">0</span>
+</p>
+
+<button onclick="petCat()">
+gentle head pat 🐾
+</button>
+
+<br>
+
+<button
+id="meetButton"
+class="hidden"
+onclick="showCats()">
+meet the cats 🌸
+</button>
+
+<p class="small">
+for Purbi 🐾
+</p>
+
+</div>
+
+<div class="card hidden" id="catsPage">
+
+<h2>🧸 The Residents 🧸</h2>
+
+<p>
+☁️ Marshmallow<br>
+special skill: existing peacefully
+</p>
+
+<p>
+🧸 Biscuit<br>
+special skill: professional sleeping
+</p>
+
+<p>
+🍞 Loaf<br>
+special skill: being suspiciously round
+</p>
+
+<p>
+🌱 Sprout<br>
+special skill: being tiny
+</p>
+
+<button onclick="goBack()">
+← back
+</button>
+
+</div>
+
+<audio id="meow">
+<source src="meow.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+let pets = 0;
+
+setInterval(createPetal,1200);
+
+function createPetal(){
+
+const petal = document.createElement("div");
+
+petal.className = "petal";
+
+petal.innerHTML = "🌸";
+
+petal.style.left =
+Math.random()*100 + "vw";
+
+petal.style.animationDuration =
+(5 + Math.random()*3) + "s";
+
+document.body.appendChild(petal);
+
+setTimeout(()=>{
+petal.remove();
+},8000);
+
+}
+
+function petCat(){
+
+pets++;
+
+document.getElementById("counter").innerText = pets;
+
+const meow =
+document.getElementById("meow");
+
+meow.currentTime = 0;
+meow.play();
+
+const cat =
+document.getElementById("cat");
+
+const cats = [
+"cat1.jpg",
+"cat2.jpg",
+"cat3.jpg",
+"cat4.jpg"
+];
+
+cat.src =
+cats[Math.floor(Math.random()*cats.length)];
+
+cat.classList.add("petting");
+
+setTimeout(()=>{
+cat.classList.remove("petting");
+},500);
+
+const messages = [
+
+"☁️ happy purring noises",
+
+"🧸 the cat has become slightly rounder",
+
+"🤍 the cat seems very comfortable",
+
+"🌸 a tiny slow blink appeared",
+
+"🍪 the cat is enjoying this",
+
+"🐾 friendship level: increasing",
+
+"🌙 the cat has decided to stay nearby"
+
+];
+
+let text =
+messages[Math.floor(Math.random()*messages.length)];
+
+if(pets === 10){
+text =
+"☁️ the cats have started recognizing this human";
+}
+
+if(pets === 20){
+text =
+"🧸 the cats have shuffled closer";
+}
+
+if(pets === 30){
+text =
+"🤍 officially trusted. the cats have made room for you in the pile.";
+}
+
+document.getElementById("message").innerText =
+text;
+
+const heart =
+document.createElement("div");
+
+heart.innerHTML = "🤍";
+
+heart.className = "heart";
+
+heart.style.left = "50%";
+heart.style.top = "120px";
+
+document.querySelector("#home")
+.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},1500);
+
+if(pets >= 5){
+document.getElementById("meetButton")
+.classList.remove("hidden");
+}
+
+}
+
+function showCats(){
+
+document.getElementById("home")
+.classList.add("hidden");
+
+document.getElementById("catsPage")
+.classList.remove("hidden");
+
+}
+
+function goBack(){
+
+document.getElementById("catsPage")
+.classList.add("hidden");
+
+document.getElementById("home")
+.classList.remove("hidden");
+
+}
+
+</script>
+
+</body>
+</html>
